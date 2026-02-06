@@ -1,4 +1,5 @@
 "use client"
+// Vercel Sync Hash: 2026-02-06-1925
 
 import { FadeIn } from "@/components/features/motion/FadeIn"
 import { Button } from "@/components/ui/button"
