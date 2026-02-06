@@ -1,0 +1,229 @@
+INTEGRA SUITE — KNOWLEDGE_BASE (v1)
+Last updated: 2026-02-05
+Working name: Integra Suite
+Primary language: PT-BR (site/UI). Internal notes may be in EN when needed.
+
+============================================================
+1) DEFINIÇÃO (O QUE É)
+============================================================
+Integra Suite é uma plataforma modular para conectar frentes da operação (processos, pessoas, documentos e pagamentos) e dar uma visão do todo.
+• Você começa por um módulo com alto time-to-value (Pagamentos/Recorrência).
+• Expande para a suíte conforme precisar integrar mais frentes e ganhar controle/ritmo.
+
+Elevator pitch (30s):
+“Quando cada área usa uma ferramenta diferente, a empresa perde controle e ritmo. A Integra Suite conecta frentes críticas em uma visão única. Você começa por Pagamentos para rodar recorrência em minutos e evolui por módulos conforme a operação cresce.”
+
+============================================================
+2) PROBLEMA CENTRAL (ROOT PAIN)
+============================================================
+A operação está fragmentada: planilhas + WhatsApp + apps pontuais + processos manuais.
+Consequências:
+• retrabalho e duplicidade de informação
+• falta de rastreabilidade (quem fez o quê / status / prazos)
+• decisões lentas por falta de visão do todo
+• risco operacional (erros, acessos soltos, dados espalhados)
+• dificuldade de escala (cada novo cliente/projeto vira caos)
+
+Frase âncora:
+“A empresa perde ritmo porque a operação está desconectada.”
+
+============================================================
+3) PROPÓSITO, PROMESSA E PRINCÍPIOS (MARCA GUARDA-CHUVA)
+============================================================
+Propósito:
+Conectar rapidamente as frentes da operação para a empresa rodar com clareza.
+
+Promessa-mãe:
+“Uma visão do todo. Menos fricção. Mais controle.”
+
+Princípios:
+1) Trust first (especialmente em dinheiro e acesso)
+2) Time-to-value (valor rápido, sem ‘projeto de ERP’)
+3) Modular, not messy (cresce por módulos sem bagunça)
+4) Action clarity (1 CTA primário por seção)
+
+============================================================
+4) ICPs (PERFIS-ALVO) E ENTRADAS
+============================================================
+ICP A — Entrada (Pagamentos / Recorrência) [prioritário para aquisição]
+• Quem: negócios com cobrança recorrente (serviços, assinaturas, mensalidades), operação enxuta.
+• Dor: inadimplência, cobrança manual, falta de previsibilidade, status disperso.
+• JTBD: “Quero rodar recorrência e acompanhar recebimentos sem caos.”
+• Ativação: criar a primeira cobrança recorrente + próximo passo claro.
+
+ICP B — Suíte (upsell / expansão)
+• Quem: software houses/consultorias e operações multi-frente (projetos + pessoas + financeiro + docs).
+• Dor: informação espalhada, governança fraca, retrabalho, pouca visibilidade consolidada.
+• JTBD: “Quero uma visão única da operação e processos rastreáveis.”
+
+============================================================
+5) PORTFÓLIO (MÓDULOS) — LÓGICA DE EXPANSÃO
+============================================================
+Regra:
+• Marca mãe = visão do todo + conexão.
+• Produtos/módulos = entradas por dor específica.
+
+Módulos (exemplos/nomes atuais):
+- Principal
+- TimeSheet
+- Licitações
+- Workflow
+- Talentos
+- Vault
+- FinDash
+- Vendas
+- Pagamentos (entrada principal)
+- WhatsApp Business (se aplicável)
+
+Padrão de expansão:
+Start → Pagamentos (valor rápido) → Connect → outros módulos → Suite.
+
+============================================================
+6) FUNIL (SITE → TRIAL → ATIVAÇÃO)
+============================================================
+Home → LP Pagamentos → Comece grátis → Onboarding (3 telas) → Ativação (cobrança criada)
+
+Regra:
+• “Comece grátis” sempre inicia pelo **Trial Pagamentos**.
+
+============================================================
+7) MENSAGENS-CHAVE (SITE/LP)
+============================================================
+Home (guarda-chuva)
+• Conectar frentes + visão do todo
+• Modularidade (comece pequeno)
+• CTA: Comece grátis (por Pagamentos)
+
+LP Pagamentos
+• “Recorrência rodando em minutos”
+• 3 passos + confiança + FAQ
+• CTA: Comece grátis
+
+Planos
+• “Como escolher” (não feature dump)
+• CTA: Comece grátis
+• Secundário: Falar com vendas (Enterprise)
+
+============================================================
+8) TOM DE VOZ (COPY RULES)
+============================================================
+Tom:
+• direto, confiável, operacional
+• sem hype / sem buzzwords
+• promessas demonstráveis
+
+Do:
+• Frases curtas
+• 1 promessa por seção
+• Benefícios práticos (menos manual, mais controle, mais previsibilidade)
+
+Don’t (proibidos):
+• “revolucionário”, “mágico”, “sem esforço”, “em 1 clique”, “IA faz tudo”
+• “garantido”, “resultado certo”, “o melhor do mercado”
+• números sem fonte
+
+Copy patterns:
+• Headline = dor + resultado
+• Subheadline = como funciona em 1 linha
+• Bullets = ação → impacto → confiança
+
+============================================================
+9) CTA & MICROCOPY (PADRÕES)
+============================================================
+CTAs (PT-BR):
+• Primário: “Comece grátis”
+• Secundário: “Ver planos”
+• Secundário: “Ver módulos”
+• Secundário (sales): “Falar com vendas”
+• Onboarding: “Começar”, “Continuar”, “Concluir e criar”, “Adicionar primeiro cliente”
+
+Microcopy:
+• Erro geral: “Não conseguimos salvar agora. Tente novamente em alguns segundos.”
+• Sucesso: “Tudo pronto! Sua cobrança recorrente está criada.”
+• Vazio: “Você ainda não cadastrou nenhum cliente. Adicione o primeiro para começar.”
+
+Regra:
+• 1 CTA primário por seção
+• Dark mode: CTA primário sempre laranja (Tegra Spark)
+
+============================================================
+10) ONBOARDING (TRIAL) — 3 TELAS (MÍNIMO VIÁVEL)
+============================================================
+Objetivo: chegar ao primeiro valor em minutos (setup de recorrência).
+
+Tela 1 — Boas-vindas
+• “Vamos configurar sua cobrança recorrente” + “Leva ~3 minutos”
+
+Tela 2 — Setup da cobrança
+• campos mínimos: nome, valor, frequência, vencimento
+• validação inline + CTA disabled até válido
+
+Tela 3 — Sucesso + próximos passos
+• “Tudo pronto! … criada.”
+• CTA: “Adicionar primeiro cliente”
+• secundário: “Ver planos”
+
+Estados obrigatórios:
+loading / disabled / error (retry) / success / empty
+
+============================================================
+11) OBJEÇÕES (E RESPOSTAS CURTAS)
+============================================================
+1) “É seguro?”
+• “A plataforma foi desenhada para operar com controle e rastreabilidade. Itens técnicos específicos só com validação.”
+
+2) “Vai dar trabalho migrar?”
+• “Você começa pequeno por Pagamentos e expande por módulos. Sem trocar tudo de uma vez.”
+
+3) “Serve para meu caso?”
+• “Se você cobra recorrência, Pagamentos resolve a base. Se precisa de visão do todo, conecta módulos.”
+
+4) “E suporte?”
+• “Suporte para configurar e chegar ao primeiro valor rapidamente.”
+
+5) “Por que não planilha?”
+• “Planilha não dá rastreabilidade, automação e visão consolidada. O custo aparece no retrabalho e nos erros.”
+
+============================================================
+12) DIFERENCIAIS (SEM PROMESSA VAZIA)
+============================================================
+• Modularidade com coerência (não são ferramentas soltas)
+• Time-to-value (começa por Pagamentos)
+• Visão do todo (status + rastreabilidade + contexto)
+• Clareza de ação (CTAs simples, onboarding curto)
+
+============================================================
+13) TRACKING (MÍNIMO)
+============================================================
+North Star:
+• payment_setup_completed
+
+Eventos:
+• page_viewed
+• cta_start_trial_clicked
+• trial_started
+• onboarding_step_completed
+• payment_setup_completed
+
+============================================================
+14) LIMITES (O QUE NÃO AFIRMAR SEM PROVA)
+============================================================
+Não afirmar/publicar:
+• “reduz inadimplência em X%”
+• “mais barato que…”
+• “certificação X”
+• “integra com tudo” (listar integrações reais)
+
+============================================================
+15) COMO USAR ESTE ARQUIVO (PARA AGENTES)
+============================================================
+Use este arquivo para:
+• manter consistência de mensagem (visão do todo + modularidade)
+• evitar hype / claims não demonstráveis
+• orientar copy de Home/LP/Planos/Onboarding e PPT comercial
+• garantir que Pagamentos é entrada, mas a marca é guarda-chuva
+
+Ao criar algo novo:
+• alinhar com as seções 2–3 (problema/purpose) e 8 (tom)
+• manter 1 promessa por seção
+• manter 1 CTA primário por seção
