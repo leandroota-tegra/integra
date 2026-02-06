@@ -16,7 +16,7 @@ const fadeInVariants = {
             duration: 0.5,
             delay: delay,
             ease: "easeOut"
-        }
+        } as const
     })
 }
 
