@@ -3,10 +3,15 @@
 import { motion } from "framer-motion"
 
 const fadeInVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (delay: number = 0) => ({
+    hidden: ({ direction }: { direction: string }) => ({
+        opacity: 0,
+        y: direction === "up" ? 20 : direction === "down" ? -20 : 0,
+        x: direction === "left" ? 20 : direction === "right" ? -20 : 0,
+    }),
+    visible: ({ delay }: { delay: number }) => ({
         opacity: 1,
         y: 0,
+        x: 0,
         transition: {
             duration: 0.5,
             delay: delay,
@@ -15,14 +20,24 @@ const fadeInVariants = {
     })
 }
 
-export function FadeIn({ children, delay = 0, className }: { children: React.ReactNode, delay?: number, className?: string }) {
+export function FadeIn({
+    children,
+    delay = 0,
+    direction = "up",
+    className
+}: {
+    children: React.ReactNode,
+    delay?: number,
+    direction?: "up" | "down" | "left" | "right",
+    className?: string
+}) {
     return (
         <motion.div
             variants={fadeInVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            custom={delay}
+            custom={{ delay, direction }}
             className={className}
         >
             {children}
