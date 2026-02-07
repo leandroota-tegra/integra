@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { FadeIn } from "@/components/features/motion/FadeIn"
 import { Plus, Minus } from "lucide-react"
+import { EcossistemaBackground } from "@/components/features/EcossistemaBackground"
 
 const faqs = [
     {
@@ -61,9 +62,8 @@ export function FAQSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(0)
 
     return (
-        <section id="faq" className="py-24 bg-brand relative overflow-hidden">
-            {/* Background Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 pointer-events-none" />
+        <section id="faq" className="py-24 bg-[#111C33] relative overflow-hidden">
+            <EcossistemaBackground />
 
             <div className="container px-4 md:px-6 relative z-10">
 

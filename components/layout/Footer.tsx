@@ -3,11 +3,13 @@
 import Link from "next/link"
 import { FadeIn } from "@/components/features/motion/FadeIn" // Optional animation
 import { Instagram, Linkedin, Twitter, Facebook } from "lucide-react"
+import { EcossistemaBackground } from "@/components/features/EcossistemaBackground"
 
 export function Footer() {
     return (
-        <footer className="bg-brand text-white py-16 border-t border-white/10">
-            <div className="container px-4 md:px-6">
+        <footer className="relative bg-[#111C33] text-white py-16 border-t border-white/10 overflow-hidden">
+            <EcossistemaBackground />
+            <div className="container relative z-10 px-4 md:px-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
 
                     {/* Brand Column */}
