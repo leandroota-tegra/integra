@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useEffect } from "react"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 
 interface SpotlightCardProps {
@@ -18,54 +18,57 @@ export function SpotlightCard({
 }: SpotlightCardProps) {
     const containerRef = useRef<HTMLDivElement>(null)
 
-    // Local mouse (for internal spotlight override if needed)
+    // Position of the relative "closest point" on the border
+    const borderX = useSpring(0, { stiffness: 100, damping: 30 })
+    const borderY = useSpring(0, { stiffness: 100, damping: 30 })
+    const borderOpacity = useSpring(0.3, { stiffness: 100, damping: 30 })
+
+    // Internal spotlight still follows mouse exactly if hovered
     const mouseX = useMotionValue(0)
     const mouseY = useMotionValue(0)
     const isHovered = useMotionValue(0)
-
-    // Global angle and intensity for the light source
-    const lightAngle = useSpring(135, { stiffness: 60, damping: 20 })
-    const lightIntensity = useSpring(0.3, { stiffness: 60, damping: 20 })
 
     useEffect(() => {
         const handleGlobalMouseMove = (e: MouseEvent) => {
             if (!containerRef.current) return
 
             const rect = containerRef.current.getBoundingClientRect()
-            const centerX = rect.left + rect.width / 2
-            const centerY = rect.top + rect.height / 2
 
-            // Calculate angle from card center to mouse
-            const dx = e.clientX - centerX
-            const dy = e.clientY - centerY
+            // 1. Calculate local coordinates relative to card top-left
+            const localX = e.clientX - rect.left
+            const localY = e.clientY - rect.top
 
-            // Convert to degrees for CSS linear-gradient
-            // Math.atan2 returns radians from -PI to PI
-            let angle = (Math.atan2(dy, dx) * 180) / Math.PI
-            // Adjust to CSS gradient angle (where 0deg is top, 90deg is right)
-            angle = (angle + 90) % 360
+            // 2. Clamp coordinates to card boundaries to find the "Closest Point" on the edge
+            // This is the mathematical "projection" logic for a premium directed beam
+            const clampedX = Math.max(0, Math.min(localX, rect.width))
+            const clampedY = Math.max(0, Math.min(localY, rect.height))
 
-            lightAngle.set(angle)
+            borderX.set(clampedX)
+            borderY.set(clampedY)
 
-            // Calculate distance for intensity (closer mouse = stronger edge highlight)
+            // 3. Distance-based intensity falloff
+            const dx = e.clientX - (rect.left + rect.width / 2)
+            const dy = e.clientY - (rect.top + rect.height / 2)
             const dist = Math.sqrt(dx * dx + dy * dy)
-            const maxDist = Math.max(window.innerWidth, window.innerHeight)
-            const intensity = Math.max(0.2, 1 - dist / maxDist)
-            lightIntensity.set(intensity)
+            const maxDist = Math.max(window.innerWidth, window.innerHeight) / 1.5
 
-            // Local coordinates for internal spotlight
-            mouseX.set(e.clientX - rect.left)
-            mouseY.set(e.clientY - rect.top)
+            // Keep highlights visible but make them "glance" as the mouse moves away
+            const intensity = Math.max(0.1, 0.6 - dist / maxDist)
+            borderOpacity.set(intensity)
+
+            // Local coordinates for the inner glow
+            mouseX.set(localX)
+            mouseY.set(localY)
         }
 
         window.addEventListener("mousemove", handleGlobalMouseMove)
         return () => window.removeEventListener("mousemove", handleGlobalMouseMove)
-    }, [lightAngle, lightIntensity, mouseX, mouseY])
+    }, [borderX, borderY, borderOpacity, mouseX, mouseY])
 
-    const gradientBackground = useTransform(
-        [lightAngle, lightIntensity],
-        ([angle, intensity]: any) =>
-            `linear-gradient(${angle}deg, rgba(255,255,255,${0.4 * intensity}) 0%, transparent 60%)`
+    const borderGradient = useTransform(
+        [borderX, borderY, borderOpacity],
+        ([x, y, opacity]: any) =>
+            `radial-gradient(400px circle at ${x}px ${y}px, rgba(255,255,255,${opacity}), transparent 80%)`
     )
 
     return (
@@ -73,13 +76,13 @@ export function SpotlightCard({
             ref={containerRef}
             onMouseEnter={() => isHovered.set(1)}
             onMouseLeave={() => isHovered.set(0)}
-            className={`group relative overflow-hidden rounded-3xl border border-white/10 bg-[#15213d]/50 backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:shadow-2xl ${className}`}
+            className={`group relative overflow-hidden rounded-3xl border border-white/5 bg-[#15213d]/50 backdrop-blur-xl transition-all duration-300 hover:border-white/10 hover:shadow-2xl ${className}`}
         >
-            {/* 1. Internal Spotlight Glow (Follows cursor, intensifies on hover) */}
+            {/* 1. Internal Spotlight Glow (Follows cursor inside) */}
             <motion.div
                 className="pointer-events-none absolute -inset-px rounded-3xl transition duration-500"
                 style={{
-                    opacity: useTransform(isHovered, [0, 1], [0.3, 1]), // Always slightly visibile, stronger on hover
+                    opacity: useTransform(isHovered, [0, 1], [0.2, 0.8]),
                     background: useTransform(
                         [mouseX, mouseY],
                         ([x, y]) => `radial-gradient(${size}px circle at ${x}px ${y}px, ${spotlightColor}, transparent 80%)`
@@ -87,16 +90,16 @@ export function SpotlightCard({
                 }}
             />
 
-            {/* 2. Global Directional Border Highlight (Always apparent, reacts to global mouse) */}
+            {/* 2. REFINED: Closest Point Border Highlight (The "Premium" Directed Beam) */}
             <motion.div
                 className="pointer-events-none absolute -inset-px rounded-3xl z-30"
                 style={{
-                    background: gradientBackground,
+                    background: borderGradient,
                     WebkitMaskImage: "linear-gradient(black, black), linear-gradient(black, black)",
                     WebkitMaskClip: "content-box, border-box",
                     WebkitMaskComposite: "source-out",
                     maskComposite: "exclude",
-                    padding: "1.5px"
+                    padding: "2px" // Slightly thicker for better "glint"
                 }}
             />
 
