@@ -14,20 +14,14 @@ import {
     MessageCircle,
     ArrowUpRight
 } from "lucide-react"
+import { SpotlightCard } from "@/components/ui/SpotlightCard"
 import Link from "next/link"
 import { EcossistemaBackground } from "./EcossistemaBackground"
 
 // Standardized Card Component for absolute consistency
 function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/10", iconColor = "text-white" }: any) {
     return (
-        <div className={`
-            ${size} group relative overflow-hidden rounded-3xl border border-white/10 p-8 
-            transition-all duration-300 hover:border-white/20 hover:bg-white/15 hover:shadow-2xl hover:-translate-y-1
-            flex flex-col justify-between ${bg} backdrop-blur-xl
-        `}>
-            {/* Hover Glow */}
-            <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-white/5 blur-3xl transition-opacity opacity-0 group-hover:opacity-100" />
-
+        <SpotlightCard className={`${size} h-full p-8 flex flex-col justify-between ${bg}`}>
             <div className="flex justify-between items-start mb-6">
                 <div className="p-3 bg-white/5 rounded-2xl ring-1 ring-white/10">
                     <Icon className={`w-6 h-6 ${iconColor}`} />
@@ -49,7 +43,7 @@ function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/10", iconColo
                     {desc}
                 </p>
             </div>
-        </div>
+        </SpotlightCard>
     )
 }
 
