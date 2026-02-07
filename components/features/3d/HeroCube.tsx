@@ -1,7 +1,7 @@
 "use client"
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import { RoundedBox, Environment, Float, MeshTransmissionMaterial } from "@react-three/drei"
+import { RoundedBox, Environment, Float } from "@react-three/drei"
 import { useRef, useMemo, useEffect, Suspense } from "react"
 import * as THREE from "three"
 
@@ -179,21 +179,18 @@ function Fragment({
                     radius={0.06}
                     smoothness={4}
                 >
-                    <MeshTransmissionMaterial
-                        backside
-                        samples={4}
-                        thickness={0.2}
-                        chromaticAberration={0.02}
-                        anisotropicBlur={0.1}
-                        ior={1.2}
-                        distortion={0.1}
-                        distortionScale={0.1}
-                        temporalDistortion={0.1}
-                        clearcoat={0.1}
-                        attenuationDistance={0.5}
-                        attenuationColor={isOrange ? COLOR_ORANGE : COLOR_BLUE}
+                    <meshPhysicalMaterial
                         color={isOrange ? COLOR_ORANGE : COLOR_BLUE}
-                        roughness={0.2}
+                        roughness={0.3}
+                        metalness={0.05}
+                        transmission={0.6}
+                        thickness={0.5}
+                        ior={1.45}
+                        clearcoat={0.4}
+                        clearcoatRoughness={0.2}
+                        envMapIntensity={1.0}
+                        transparent={true}
+                        opacity={0.9}
                     />
                 </RoundedBox>
             </mesh>
