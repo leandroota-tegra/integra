@@ -179,11 +179,18 @@ function Fragment({
                     radius={0.06}
                     smoothness={4}
                 >
-                    <meshStandardMaterial
+                    <meshPhysicalMaterial
                         color={isOrange ? COLOR_ORANGE : COLOR_BLUE}
-                        roughness={0.7}
-                        metalness={0.1}
-                        envMapIntensity={1}
+                        roughness={0.15}
+                        metalness={0.05}
+                        transmission={0.6}
+                        thickness={0.5}
+                        ior={1.45}
+                        clearcoat={1}
+                        clearcoatRoughness={0.1}
+                        envMapIntensity={1.5}
+                        transparent={true}
+                        opacity={0.9}
                     />
                 </RoundedBox>
             </mesh>
