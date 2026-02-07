@@ -181,14 +181,14 @@ function Fragment({
                 >
                     <meshPhysicalMaterial
                         color={isOrange ? COLOR_ORANGE : COLOR_BLUE}
-                        roughness={0.7}
-                        metalness={0.05}
-                        transmission={0.4}
+                        roughness={0.9}
+                        metalness={0.0}
+                        transmission={0.3}
                         thickness={0.5}
-                        ior={1.4}
-                        clearcoat={0.1}
-                        clearcoatRoughness={0.8}
-                        envMapIntensity={0.6}
+                        ior={1.3}
+                        clearcoat={0}
+                        clearcoatRoughness={1}
+                        envMapIntensity={0.3}
                         transparent={true}
                         opacity={0.9}
                     />
