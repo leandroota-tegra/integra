@@ -202,11 +202,19 @@ function Scene({ isAssembling }: { isAssembling: boolean }) {
     const groupRef = useRef<THREE.Group>(null)
 
     useFrame((state, delta) => {
-        if (groupRef.current && isAssembling) {
-            groupRef.current.rotation.y += 0.2 * delta
-            groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1
-        } else if (groupRef.current) {
-            groupRef.current.rotation.y += 0.05 * delta
+        if (groupRef.current) {
+            // Apply rotation
+            if (isAssembling) {
+                groupRef.current.rotation.y += 0.2 * delta
+                groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1
+            } else {
+                groupRef.current.rotation.y += 0.05 * delta
+                groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0, 0.1)
+            }
+
+            // Apply smooth zoom (scale)
+            const targetScale = isAssembling ? 1.35 : 1.0
+            groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1)
         }
     })
 
