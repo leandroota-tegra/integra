@@ -8,6 +8,7 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { useIsMobile } from "@/components/hooks/useMobile"
+import { EcossistemaBackground } from "@/components/features/EcossistemaBackground"
 
 // Dynamic import for 3D component (Client-side only, no SSR)
 const HeroCube = dynamic(() => import("@/components/features/3d/HeroCube").then(mod => mod.HeroCube), {
@@ -34,14 +35,8 @@ export function Hero() {
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
             />
 
-            {/* 2. Parallax Gradient Background */}
-            <motion.div
-                style={{ y: yBackground }}
-                className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,_#332F5A_0%,_#252244_100%)] opacity-80"
-            />
-
-            {/* Subtle Grid Overlay */}
-            <div className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:6rem_6rem] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
+            {/* 2. Unified Grid Pulse Background */}
+            <EcossistemaBackground />
 
             {/* 3. 3D Cube Scene (Desktop Only) */}
             {!isMobile && (

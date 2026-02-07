@@ -16,19 +16,17 @@ export function EcossistemaBackground() {
 
             const sketch = (s: any) => {
                 let params = {
-                    gridSpacing: 80,
-                    glowRadius: 28,
-                    glowAlpha: 12,
-                    flareHeight: 120,
-                    flareWidth: 40,
-                    smokeAlpha: 4,
-                    vignetteStrength: 235,
-                    neonBlue: [0, 210, 255],
-                    travelerSpeed: 0.12
+                    gridSpacing: 40,
+                    glowAlphaBase: 120,    // High alpha for the "leading edge"
+                    pulseSpeed: 4.5,       // Pixels per frame expansion
+                    maxRadius: 600,        // Max spread before total death
+                    fissureWeight: 2.2,
+                    brandOrange: [255, 93, 0],
+                    brandMidnight: [17, 28, 51] // #111C33
                 }
 
-                let traveler: any
-                let stars: any[] = []
+                let pulses: GridPulse[] = []
+                let nextSpawnTime = 0
 
                 s.setup = () => {
                     const container = containerRef.current
@@ -37,168 +35,151 @@ export function EcossistemaBackground() {
                     let canvas = s.createCanvas(container.offsetWidth, container.offsetHeight)
                     canvas.parent(container)
                     s.pixelDensity(1)
-                    initializeSystem()
+                    s.frameRate(60)
+                    s.strokeCap(s.ROUND)
+
+                    pulses = []
+                    spawnOne()
                 }
 
-                function initializeSystem() {
-                    s.randomSeed(88888)
-                    s.noiseSeed(88888)
-                    traveler = new Traveler(s, params)
-                    stars = []
+                function spawnOne() {
+                    // Pick a grid-aligned origin
+                    let rx = s.random(s.width * 0.1, s.width * 0.9)
+                    let ry = s.random(s.height * 0.1, s.height * 0.9)
+                    let nx = s.floor(rx / params.gridSpacing) * params.gridSpacing
+                    let ny = s.floor(ry / params.gridSpacing) * params.gridSpacing
 
-                    for (let x = 0; x <= s.width + params.gridSpacing; x += params.gridSpacing) {
-                        for (let y = 0; y <= s.height + params.gridSpacing; y += params.gridSpacing) {
-                            // High density of intersections in this movement
-                            stars.push({
-                                x, y,
-                                phase: s.random(s.TWO_PI),
-                                size: s.random(0.7, 1.3),
-                                type: s.random() < 0.3 ? 'heavy' : 'light'
-                            })
-                        }
-                    }
+                    pulses.push(new GridPulse(s, params, nx, ny))
                 }
 
                 s.draw = () => {
-                    // Deep navy black
-                    s.background(0, 0, 5)
+                    s.background(params.brandMidnight[0], params.brandMidnight[1], params.brandMidnight[2])
 
-                    // Atmosphere / Smoke Grain
-                    drawSmoke(s, params)
+                    if (s.millis() > nextSpawnTime) {
+                        spawnOne()
+                        nextSpawnTime = s.millis() + s.random(1500, 3500)
+                    }
 
-                    // Luminous Grid & Flares
-                    s.blendMode(s.SCREEN)
-                    drawVolumetricGrid(s, params)
-                    drawIntersections(s, params)
+                    for (let i = pulses.length - 1; i >= 0; i--) {
+                        pulses[i].update()
+                        if (pulses[i].isDead) pulses.splice(i, 1)
+                    }
 
-                    traveler.update()
-                    traveler.draw()
-
+                    s.blendMode(s.ADD)
+                    drawGrid(s, params)
                     s.blendMode(s.BLEND)
-                    drawVignette(s, params)
                 }
 
                 s.windowResized = () => {
                     const container = containerRef.current
-                    if (container) {
-                        s.resizeCanvas(container.offsetWidth, container.offsetHeight)
-                        initializeSystem()
-                    }
+                    if (container) s.resizeCanvas(container.offsetWidth, container.offsetHeight)
                 }
 
-                function drawSmoke(s: any, p: any) {
-                    s.noStroke()
-                    for (let i = 0; i < 3; i++) {
-                        s.fill(p.neonBlue[0], p.neonBlue[1], p.neonBlue[2], p.smokeAlpha)
-                        let x = s.noise(s.frameCount * 0.003, i) * s.width
-                        let y = s.noise(i, s.frameCount * 0.003) * s.height
-                        s.ellipse(x, y, 600, 600)
-                    }
-                }
-
-                function drawVolumetricGrid(s: any, p: any) {
-                    let [r, g, b] = p.neonBlue
-                    s.noFill()
+                function drawGrid(s: any, p: any) {
+                    // Render Base Grid
+                    s.stroke(15, 23, 42, 100)
+                    s.strokeWeight(p.fissureWeight)
 
                     for (let x = 0; x <= s.width + p.gridSpacing; x += p.gridSpacing) {
-                        renderVolumetricLine(s, x, 0, x, s.height, r, g, b, p)
+                        s.line(x, 0, x, s.height)
                     }
                     for (let y = 0; y <= s.height + p.gridSpacing; y += p.gridSpacing) {
-                        renderVolumetricLine(s, 0, y, s.width, y, r, g, b, p)
+                        s.line(0, y, s.width, y)
+                    }
+
+                    // Render Energy Pulses along Grid
+                    for (let pulse of pulses) {
+                        renderEnergyTravel(s, pulse, p)
                     }
                 }
 
-                function renderVolumetricLine(s: any, x1: number, y1: number, x2: number, y2: number, r: number, g: number, b: number, p: any) {
-                    // Staggered glow for cloud-like feel
-                    for (let i = p.glowRadius; i > 0; i -= 4) {
-                        let alpha = s.map(i, 0, p.glowRadius, p.glowAlpha, 0)
-                        s.stroke(r, g, b, alpha)
-                        s.strokeWeight(i)
-                        s.line(x1, y1, x2, y2)
-                    }
-                    // Vivid core line
-                    s.stroke(255, 255, 255, 140)
-                    s.strokeWeight(1)
-                    s.line(x1, y1, x2, y2)
-                }
+                function renderEnergyTravel(s: any, pulse: GridPulse, p: any) {
+                    let [r, g, b] = p.brandOrange
+                    let rInner = pulse.radius - 80
+                    let rOuter = pulse.radius
 
-                function drawIntersections(s: any, p: any) {
-                    for (let st of stars) {
-                        let pulse = (s.sin(s.frameCount * 0.03 + st.phase) + 1) * 0.5
-                        if (pulse > 0.1) {
-                            renderVerticalFlare(s, st.x, st.y, pulse * st.size, p)
+                    // Check Horizontal Lines (Y is constant)
+                    for (let y = 0; y <= s.height + p.gridSpacing; y += p.gridSpacing) {
+                        if (s.abs(y - pulse.y) < 1) { // Same line as origin
+                            renderPulseSegment(s, 0, y, s.width, y, true, pulse, p)
+                        } else if (s.abs(y - pulse.y) <= pulse.radius) {
+                            // Parallel line within radius
+                            renderPulseSegment(s, 0, y, s.width, y, true, pulse, p)
+                        }
+                    }
+
+                    // Check Vertical Lines (X is constant)
+                    for (let x = 0; x <= s.width + p.gridSpacing; x += p.gridSpacing) {
+                        if (s.abs(x - pulse.x) < 1) {
+                            renderPulseSegment(s, x, 0, x, s.height, false, pulse, p)
+                        } else if (s.abs(x - pulse.x) <= pulse.radius) {
+                            renderPulseSegment(s, x, 0, x, s.height, false, pulse, p)
                         }
                     }
                 }
 
-                function renderVerticalFlare(s: any, x: number, y: number, pulse: number, p: any) {
-                    let [r, g, b] = p.neonBlue
-                    let h = p.flareHeight * pulse
-                    let w = p.flareWidth * pulse
+                function renderPulseSegment(s: any, x1: number, y1: number, x2: number, y2: number, isH: boolean, pulse: GridPulse, p: any) {
+                    let [r, g, b] = p.brandOrange
+                    let steps = 20
+                    let len = isH ? s.width : s.height
 
-                    s.noStroke()
-                    // Diffuse hub
-                    s.fill(r, g, b, 50 * pulse)
-                    s.ellipse(x, y, 12, 12)
+                    // We only care about segments that intersect our current "wavefront"
+                    // Distance from origin to any point on this line: 
+                    // d = sqrt((x-px)^2 + (y-py)^2)
 
-                    // High-intensity core dot
-                    s.fill(255, 255, 255, 220 * pulse)
-                    s.ellipse(x, y, 3, 3)
+                    for (let j = 0; j < steps; j++) {
+                        let t = j / steps
+                        let curX = s.lerp(x1, x2, t)
+                        let curY = s.lerp(y1, y2, t)
 
-                    // Beams (Vertical Dominant)
-                    s.fill(r, g, b, 80 * pulse)
-                    s.rect(x - 1, y - h / 2, 2, h) // Vertical
-                    s.rect(x - w / 2, y - 0.5, w, 1) // Horizontal
-                }
+                        let d = s.dist(curX, curY, pulse.x, pulse.y)
 
-                function drawVignette(s: any, p: any) {
-                    let ctx = s.drawingContext
-                    let centerX = s.width / 2
-                    let centerY = s.height / 2
-                    let radius = Math.max(s.width, s.height) * 0.95
+                        // Wavefront logic: illuminate if d is slightly less than pulse.radius
+                        if (d < pulse.radius && d > pulse.radius - 150) {
+                            let intensity = s.map(d, pulse.radius - 150, pulse.radius, 0, 1)
+                            intensity *= s.map(pulse.radius, 0, p.maxRadius, 1, 0) // Dissipation over distance
 
-                    let grd = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius)
-                    grd.addColorStop(0, 'rgba(0,0,0,0)')
-                    grd.addColorStop(0.3, 'rgba(0,0,0,0)')
-                    grd.addColorStop(1, `rgba(0,0,0,${p.vignetteStrength / 255})`)
+                            let alpha = intensity * p.glowAlphaBase * pulse.lifecycleAlpha
 
-                    ctx.fillStyle = grd
-                    ctx.globalCompositeOperation = 'multiply'
-                    ctx.fillRect(0, 0, s.width, s.height)
-                    ctx.globalCompositeOperation = 'source-over'
-                }
+                            if (alpha > 1) {
+                                s.stroke(r, g, b, alpha)
+                                s.strokeWeight(p.fissureWeight + intensity * 2)
+                                let nextT = (j + 1) / steps
+                                s.line(curX, curY, s.lerp(x1, x2, nextT), s.lerp(y1, y2, nextT))
 
-                class Traveler {
-                    s: any; p: any; x: number; y: number; destX: number; destY: number; progress: number;
-                    gridX: number; gridY: number;
-                    constructor(s: any, p: any) {
-                        this.s = s; this.p = p;
-                        this.gridX = s.floor(s.random(s.width / p.gridSpacing));
-                        this.gridY = s.floor(s.random(s.height / p.gridSpacing));
-                        this.x = this.gridX * p.gridSpacing; this.y = this.gridY * p.gridSpacing;
-                        this.destX = this.x; this.destY = this.y; this.progress = 1;
+                                // Core highlight for the "head"
+                                if (intensity > 0.8) {
+                                    s.stroke(255, 255, 255, alpha * 0.6)
+                                    s.strokeWeight(p.fissureWeight * 0.5)
+                                    s.line(curX, curY, s.lerp(x1, x2, nextT), s.lerp(y1, y2, nextT))
+                                }
+                            }
+                        }
                     }
+                }
+
+                class GridPulse {
+                    s: any; p: any; x: number; y: number; radius: number;
+                    lifecycle: number; lifecycleAlpha: number; isDead: boolean;
+
+                    constructor(s: any, p: any, x: number, y: number) {
+                        this.s = s; this.p = p
+                        this.x = x; this.y = y
+                        this.radius = 0
+                        this.lifecycle = 0; this.lifecycleAlpha = 1
+                        this.isDead = false
+                    }
+
                     update() {
-                        if (this.progress >= 1) {
-                            this.gridX = this.s.floor(this.destX / this.p.gridSpacing);
-                            this.gridY = this.s.floor(this.destY / this.p.gridSpacing);
-                            let dir = this.s.floor(this.s.random(4));
-                            let nx = this.gridX + (dir === 0 ? 1 : dir === 1 ? -1 : 0);
-                            let ny = this.gridY + (dir === 2 ? 1 : dir === 3 ? -1 : 0);
-                            if (nx < 0 || nx > this.s.width / this.p.gridSpacing) nx = this.gridX;
-                            if (ny < 0 || ny > this.s.height / this.p.gridSpacing) ny = this.gridY;
-                            this.destX = nx * this.p.gridSpacing; this.destY = ny * this.p.gridSpacing;
-                            this.progress = 0;
+                        this.radius += this.p.pulseSpeed
+                        this.lifecycle += 16.67
+
+                        // Fade out towards the end of range
+                        if (this.radius > this.p.maxRadius * 0.7) {
+                            this.lifecycleAlpha = s.map(this.radius, this.p.maxRadius * 0.7, this.p.maxRadius, 1, 0)
                         }
-                        this.progress += this.p.travelerSpeed;
-                        this.x = this.s.lerp(this.x, this.destX, 0.1);
-                        this.y = this.s.lerp(this.y, this.destY, 0.1);
-                    }
-                    draw() {
-                        this.s.noStroke();
-                        this.s.fill(this.p.neonBlue[0], this.p.neonBlue[1], this.p.neonBlue[2], 120);
-                        this.s.ellipse(this.x, this.y, 10, 10);
-                        this.s.fill(255); this.s.ellipse(this.x, this.y, 4, 4);
+
+                        if (this.radius >= this.p.maxRadius) this.isDead = true
                     }
                 }
             }
@@ -212,6 +193,21 @@ export function EcossistemaBackground() {
     }, [])
 
     return (
-        <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none" />
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            {/* Dedicated Relative Container for p5 เพื่อ clear warning */}
+            <div ref={containerRef} className="relative w-full h-full" />
+
+            {/* Defocus Vignette Overlay (Above p5 Canvas) */}
+            <div
+                className="absolute inset-0 z-10 pointer-events-none"
+                style={{
+                    background: 'radial-gradient(circle at center, transparent 20%, #0F172A 85%)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    maskImage: 'radial-gradient(circle at center, transparent 10%, black 70%)',
+                    WebkitMaskImage: 'radial-gradient(circle at center, transparent 10%, black 70%)'
+                }}
+            />
+        </div>
     )
 }

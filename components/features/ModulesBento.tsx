@@ -18,12 +18,12 @@ import Link from "next/link"
 import { EcossistemaBackground } from "./EcossistemaBackground"
 
 // Standardized Card Component for absolute consistency
-function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/5", iconColor = "text-white" }: any) {
+function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/10", iconColor = "text-white" }: any) {
     return (
         <div className={`
             ${size} group relative overflow-hidden rounded-3xl border border-white/10 p-8 
-            transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1
-            flex flex-col justify-between ${bg}
+            transition-all duration-300 hover:border-white/20 hover:bg-white/15 hover:shadow-2xl hover:-translate-y-1
+            flex flex-col justify-between ${bg} backdrop-blur-xl
         `}>
             {/* Hover Glow */}
             <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-white/5 blur-3xl transition-opacity opacity-0 group-hover:opacity-100" />
@@ -57,7 +57,7 @@ function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/5", iconColor
 
 export function ModulesBento() {
     return (
-        <section id="modulos" className="relative py-24 bg-brand overflow-hidden">
+        <section id="modulos" className="relative py-24 bg-[#111C33] overflow-hidden">
             <EcossistemaBackground />
             <div className="container relative z-10 px-4 md:px-6">
 
@@ -86,7 +86,7 @@ export function ModulesBento() {
                             desc="O centro da operação. Visão consolidada de clientes, projetos e tarefas."
                             icon={LayoutDashboard}
                             size="h-full"
-                            bg="bg-gradient-to-br from-white/10 to-white/5"
+                            bg="bg-gradient-to-br from-white/15 to-white/10"
                             iconColor="text-cta" // Orange Acccent for Core
                         />
                     </FadeIn>
