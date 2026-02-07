@@ -15,6 +15,7 @@ import {
     ArrowUpRight
 } from "lucide-react"
 import Link from "next/link"
+import { EcossistemaBackground } from "./EcossistemaBackground"
 
 // Standardized Card Component for absolute consistency
 function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/5", iconColor = "text-white" }: any) {
@@ -52,10 +53,13 @@ function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/5", iconColor
     )
 }
 
+import { EcossistemaBackground } from "./EcossistemaBackground"
+
 export function ModulesBento() {
     return (
-        <section id="modulos" className="py-24 bg-brand overflow-hidden">
-            <div className="container px-4 md:px-6">
+        <section id="modulos" className="relative py-24 bg-brand overflow-hidden">
+            <EcossistemaBackground />
+            <div className="container relative z-10 px-4 md:px-6">
 
                 {/* Clean Header */}
                 <div className="mb-16 md:mb-20">
