@@ -53,7 +53,7 @@ function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/5", iconColor
     )
 }
 
-import { EcossistemaBackground } from "./EcossistemaBackground"
+
 
 export function ModulesBento() {
     return (
