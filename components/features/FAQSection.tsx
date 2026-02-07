@@ -31,6 +31,8 @@ function AccordionItem({ question, answer, isOpen, onClick }: { question: string
             <button
                 onClick={onClick}
                 className="flex items-center justify-between w-full py-6 text-left focus:outline-none group"
+                aria-expanded={isOpen}
+                aria-controls={`faq-answer-${question.replace(/\s+/g, '-').toLowerCase()}`}
             >
                 <span className={`text-lg font-bold transition-colors ${isOpen ? "text-orange-400" : "text-white group-hover:text-blue-100"}`}>
                     {question}
@@ -42,6 +44,8 @@ function AccordionItem({ question, answer, isOpen, onClick }: { question: string
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
+                        id={`faq-answer-${question.replace(/\s+/g, '-').toLowerCase()}`}
+                        role="region"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}

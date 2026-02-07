@@ -9,6 +9,7 @@ export function EcossistemaBackground() {
         if (typeof window === 'undefined') return
 
         let p5Instance: any
+        let wakeupTimeout: any = null
 
         const initP5 = async () => {
             const p5Module = await import('p5')
@@ -39,7 +40,9 @@ export function EcossistemaBackground() {
                     s.strokeCap(s.ROUND)
 
                     pulses = []
+                    // Initial spawn
                     spawnOne()
+                    nextSpawnTime = s.millis() + s.random(1500, 3500)
                 }
 
                 function spawnOne() {
@@ -58,6 +61,7 @@ export function EcossistemaBackground() {
                     if (s.millis() > nextSpawnTime) {
                         spawnOne()
                         nextSpawnTime = s.millis() + s.random(1500, 3500)
+                        s.loop() // Ensure loop is running when new pulse is spawned
                     }
 
                     for (let i = pulses.length - 1; i >= 0; i--) {
@@ -65,11 +69,23 @@ export function EcossistemaBackground() {
                         if (pulses[i].isDead) pulses.splice(i, 1)
                     }
 
+                    // Performance: Stop loop if no pulses are active
+                    if (pulses.length === 0) {
+                        s.noLoop()
+
+                        // Schedule a wakeup call when it's time to spawn the next pulse
+                        const delay = Math.max(0, nextSpawnTime - s.millis())
+                        clearTimeout(wakeupTimeout)
+                        wakeupTimeout = setTimeout(() => {
+                            s.loop()
+                        }, delay)
+                    }
+
                     s.blendMode(s.ADD)
                     drawGrid(s, params)
                     s.blendMode(s.BLEND)
                 }
-
+                // ... [rest of the sketch functions] ...
                 s.windowResized = () => {
                     const container = containerRef.current
                     if (container) s.resizeCanvas(container.offsetWidth, container.offsetHeight)
@@ -189,11 +205,18 @@ export function EcossistemaBackground() {
 
         initP5()
 
-        return () => { if (p5Instance) p5Instance.remove() }
+        return () => {
+            if (p5Instance) p5Instance.remove()
+            clearTimeout(wakeupTimeout)
+        }
     }, [])
 
     return (
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div
+            className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
+            role="img"
+            aria-label="Animação de fundo técnica com pulsos de energia que percorrem uma grade"
+        >
             {/* Dedicated Relative Container for p5 เพื่อ clear warning */}
             <div ref={containerRef} className="relative w-full h-full" />
 

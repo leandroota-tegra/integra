@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
+    const mobileMenuRef = useRef<HTMLDivElement>(null)
 
     // Handle scroll effect for glassmorphism
     useEffect(() => {
@@ -19,6 +20,44 @@ export function Navbar() {
         window.addEventListener("scroll", handleScroll)
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
+
+    // Focus Trap Logic for Mobile Menu
+    useEffect(() => {
+        if (!isOpen) return
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key !== "Tab") return
+
+            const focusableElements = mobileMenuRef.current?.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            )
+            if (!focusableElements || focusableElements.length === 0) return
+
+            const firstElement = focusableElements[0] as HTMLElement
+            const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === firstElement) {
+                    lastElement.focus()
+                    e.preventDefault()
+                }
+            } else { // Tab
+                if (document.activeElement === lastElement) {
+                    firstElement.focus()
+                    e.preventDefault()
+                }
+            }
+        }
+
+        window.addEventListener("keydown", handleKeyDown)
+        // Focus the first element (close button) when menu opens
+        setTimeout(() => {
+            const closeBtn = mobileMenuRef.current?.querySelector('button[aria-label="Fechar menu de navegação"]') as HTMLElement
+            closeBtn?.focus()
+        }, 100)
+
+        return () => window.removeEventListener("keydown", handleKeyDown)
+    }, [isOpen])
 
     const navLinks = [
         { name: "A Integra", href: "#solucao" },
@@ -76,6 +115,7 @@ export function Navbar() {
                     <button
                         onClick={() => setIsOpen(true)}
                         className="md:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+                        aria-label="Abrir menu de navegação"
                     >
                         <Menu size={24} />
                     </button>
@@ -86,10 +126,13 @@ export function Navbar() {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
+                        ref={mobileMenuRef}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[60] bg-brand/95 backdrop-blur-xl md:hidden flex flex-col"
+                        role="dialog"
+                        aria-modal="true"
                     >
                         <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
                             <Link href="/" onClick={() => setIsOpen(false)} className="relative w-32 h-8">
@@ -103,6 +146,7 @@ export function Navbar() {
                             <button
                                 onClick={() => setIsOpen(false)}
                                 className="text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+                                aria-label="Fechar menu de navegação"
                             >
                                 <X size={24} />
                             </button>

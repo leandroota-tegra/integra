@@ -21,10 +21,10 @@ export function Footer() {
                             O sistema operacional completo para empresas de serviços que querem crescer com ordem.
                         </p>
                         <div className="flex gap-4">
-                            <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-orange-500 hover:text-white transition-all text-blue-200/60">
+                            <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-orange-500 hover:text-white transition-all text-blue-200/60" aria-label="Instagram">
                                 <Instagram className="w-5 h-5" />
                             </Link>
-                            <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-orange-500 hover:text-white transition-all text-blue-200/60">
+                            <Link href="#" className="p-2 bg-white/5 rounded-full hover:bg-orange-500 hover:text-white transition-all text-blue-200/60" aria-label="Linkedin">
                                 <Linkedin className="w-5 h-5" />
                             </Link>
                         </div>
