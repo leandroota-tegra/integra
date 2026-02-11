@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { SpotlightButton } from "@/components/ui/SpotlightButton"
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
@@ -105,9 +105,9 @@ export function Navbar() {
                             <Link href="/login" className="text-sm font-medium text-white hover:text-white/80 transition-colors">
                                 Entrar
                             </Link>
-                            <Button className="rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 h-9 text-sm shadow-lg shadow-cta/20 border-0">
+                            <SpotlightButton className="rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 h-9 text-sm shadow-lg shadow-cta/20 border-0">
                                 Começar Grátis
-                            </Button>
+                            </SpotlightButton>
                         </div>
                     </div>
 
@@ -174,9 +174,9 @@ export function Navbar() {
                                 >
                                     Entrar
                                 </Link>
-                                <Button className="w-full rounded-full bg-cta hover:bg-cta-hover text-white font-bold text-lg h-14 shadow-lg shadow-cta/20 border-0">
+                                <SpotlightButton className="w-full rounded-full bg-cta hover:bg-cta-hover text-white font-bold text-lg h-14 shadow-lg shadow-cta/20 border-0">
                                     Começar Grátis
-                                </Button>
+                                </SpotlightButton>
                             </div>
                         </div>
                     </motion.div>

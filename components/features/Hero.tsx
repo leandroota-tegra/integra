@@ -2,14 +2,14 @@
 // Vercel Sync Hash: 2026-02-06-1925
 
 import { FadeIn } from "@/components/features/motion/FadeIn"
-import { Button } from "@/components/ui/button"
+import { SpotlightButton } from "@/components/ui/SpotlightButton"
 import { ArrowRight } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { useIsMobile } from "@/components/hooks/useMobile"
 import { EcossistemaBackground } from "@/components/features/EcossistemaBackground"
-import { SpotlightCard } from "@/components/ui/SpotlightCard"
+
 
 // Dynamic import for 3D component (Client-side only, no SSR)
 const HeroCube = dynamic(() => import("@/components/features/3d/HeroCube").then(mod => mod.HeroCube), {
@@ -76,17 +76,24 @@ export function Hero() {
                     <FadeIn delay={0.4}>
                         <div className="flex flex-col items-center md:items-start gap-6">
                             <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
-                                <SpotlightCard spotlightColor="rgba(255, 255, 255, 0.2)" size={200} className="rounded-full border-0 bg-transparent p-0">
-                                    <Button size="lg" className="rounded-full bg-cta hover:bg-cta-hover text-white font-bold px-10 text-lg h-16 border-0 shadow-[0_0_40px_-10px_rgba(255,93,0,0.5)] transition-shadow duration-500 hover:shadow-[0_0_60px_-10px_rgba(255,93,0,0.7)] w-full">
-                                        Começar Grátis
-                                    </Button>
-                                </SpotlightCard>
-                                <SpotlightCard spotlightColor="rgba(255, 255, 255, 0.1)" size={200} className="rounded-full border-0 bg-transparent p-0">
-                                    <Button size="lg" variant="outline" className="group rounded-full border-white/10 text-white bg-white/5 hover:bg-white/10 px-8 text-lg h-16 backdrop-blur-sm transition-all hover:border-orange-500 hover:text-orange-500 w-full">
-                                        Ver como funciona
-                                        <ArrowRight className="ml-2 w-5 h-5 opacity-70 group-hover:text-orange-500 group-hover:opacity-100 transition-all" />
-                                    </Button>
-                                </SpotlightCard>
+                                <SpotlightButton
+                                    spotlightColor="rgba(255, 255, 255, 0.2)"
+                                    spotlightSize={200}
+                                    size="lg"
+                                    className="rounded-full bg-cta hover:bg-cta-hover text-white font-bold px-10 text-lg h-16 border-0 shadow-[0_0_40px_-10px_rgba(255,93,0,0.5)] transition-shadow duration-500 hover:shadow-[0_0_60px_-10px_rgba(255,93,0,0.7)] w-full"
+                                >
+                                    Começar Grátis
+                                </SpotlightButton>
+                                <SpotlightButton
+                                    spotlightColor="rgba(255, 255, 255, 0.1)"
+                                    spotlightSize={200}
+                                    size="lg"
+                                    variant="outline"
+                                    className="group rounded-full border-white/10 text-white bg-white/5 hover:bg-white/10 px-8 text-lg h-16 backdrop-blur-sm transition-all hover:border-orange-500 hover:text-orange-500 w-full"
+                                >
+                                    Ver como funciona
+                                    <ArrowRight className="ml-2 w-5 h-5 opacity-70 group-hover:text-orange-500 group-hover:opacity-100 transition-all" />
+                                </SpotlightButton>
                             </div>
                             <p className="text-[10px] md:text-xs font-mono text-white/30 uppercase tracking-widest text-center md:text-left">Sem cartão de crédito • Cancelamento a qualquer momento</p>
                         </div>
