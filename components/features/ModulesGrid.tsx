@@ -2,7 +2,7 @@
 
 import { FadeIn } from "@/components/features/motion/FadeIn"
 import { Wallet, Users, Package, Trophy, ArrowRight } from "lucide-react"
-import Link from "next/link"
+import { SpotlightButton } from "@/components/ui/SpotlightButton"
 
 const modules = [
     {
@@ -96,12 +96,12 @@ export function ModulesGrid() {
 
                 {/* Bottom CTA */}
                 <FadeIn delay={0.4} className="mt-20 text-center">
-                    <Link
+                    <SpotlightButton
                         href="/features"
                         className="inline-flex h-14 items-center justify-center rounded-full bg-brand px-10 text-lg font-bold text-white shadow-lg shadow-brand/20 transition-all hover:bg-brand-hover hover:scale-105 active:scale-95"
                     >
                         Ver todos os recursos
-                    </Link>
+                    </SpotlightButton>
                 </FadeIn>
 
             </div>

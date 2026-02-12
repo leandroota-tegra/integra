@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from "react"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { useMousePosition } from "@/components/context/MousePositionContext"
 
 interface SpotlightCardProps {
     children: React.ReactNode
@@ -17,6 +18,7 @@ export function SpotlightCard({
     size = 600
 }: SpotlightCardProps) {
     const containerRef = useRef<HTMLDivElement>(null)
+    const { x: mouseX, y: mouseY } = useMousePosition()
 
     // Position of the relative "closest point" on the border
     const borderX = useSpring(0, { stiffness: 100, damping: 30 })
@@ -24,50 +26,79 @@ export function SpotlightCard({
     const borderOpacity = useSpring(0.3, { stiffness: 100, damping: 30 })
 
     // Internal spotlight still follows mouse exactly if hovered
-    const mouseX = useMotionValue(0)
-    const mouseY = useMotionValue(0)
+    const localMouseX = useMotionValue(0)
+    const localMouseY = useMotionValue(0)
     const isHovered = useMotionValue(0)
 
+    // Cached offset to avoid layout thrashing
+    const offset = useRef({ left: 0, top: 0, width: 0, height: 0 })
+
     useEffect(() => {
-        const handleGlobalMouseMove = (e: MouseEvent) => {
-            if (!containerRef.current) return
-
-            const rect = containerRef.current.getBoundingClientRect()
-
-            // 1. Calculate local coordinates relative to card top-left
-            const localX = e.clientX - rect.left
-            const localY = e.clientY - rect.top
-
-            // 2. Clamp coordinates to card boundaries to find the "Closest Point" on the edge
-            // This is the mathematical "projection" logic for a premium directed beam
-            const clampedX = Math.max(0, Math.min(localX, rect.width))
-            const clampedY = Math.max(0, Math.min(localY, rect.height))
-
-            borderX.set(clampedX)
-            borderY.set(clampedY)
-
-            // 3. Distance-based intensity falloff
-            const dx = e.clientX - (rect.left + rect.width / 2)
-            const dy = e.clientY - (rect.top + rect.height / 2)
-            const dist = Math.sqrt(dx * dx + dy * dy)
-            const maxDist = Math.max(window.innerWidth, window.innerHeight) / 1.5
-
-            // Keep highlights visible but make them "glance" as the mouse moves away
-            const intensity = Math.max(0.1, 0.6 - dist / maxDist)
-            borderOpacity.set(intensity)
-
-            // Local coordinates for the inner glow
-            mouseX.set(localX)
-            mouseY.set(localY)
+        const updateOffset = () => {
+            if (containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect()
+                const scrollX = window.scrollX
+                const scrollY = window.scrollY
+                offset.current = {
+                    left: rect.left + scrollX,
+                    top: rect.top + scrollY,
+                    width: rect.width,
+                    height: rect.height
+                }
+            }
         }
 
-        window.addEventListener("mousemove", handleGlobalMouseMove)
-        return () => window.removeEventListener("mousemove", handleGlobalMouseMove)
-    }, [borderX, borderY, borderOpacity, mouseX, mouseY])
+        updateOffset()
+
+        // Re-calculate on resize
+        window.addEventListener("resize", updateOffset)
+        return () => window.removeEventListener("resize", updateOffset)
+    }, [])
+
+    useEffect(() => {
+        // Subscribe to global mouse changes
+        const unsubscribeX = mouseX.on("change", (currentX) => {
+            if (!offset.current.width) return
+
+            const localX = currentX - offset.current.left
+
+
+            // Clamp coordinates for border
+            const clampedX = Math.max(0, Math.min(localX, offset.current.width))
+            borderX.set(clampedX)
+
+            // Inner glow
+            localMouseX.set(localX)
+
+            // Opacity calculation
+            const dx = currentX - (offset.current.left + offset.current.width / 2)
+            const dy = mouseY.get() - (offset.current.top + offset.current.height / 2)
+            const dist = Math.sqrt(dx * dx + dy * dy)
+            const maxDist = Math.max(window.innerWidth, window.innerHeight) / 1.5
+            const intensity = Math.max(0.1, 0.6 - dist / maxDist)
+            borderOpacity.set(intensity)
+        })
+
+        const unsubscribeY = mouseY.on("change", (currentY) => {
+            if (!offset.current.height) return
+
+            const localY = currentY - offset.current.top
+            // We can duplicate logic or just rely on X update if they happen together? 
+            // Mouse events usually update both. But to be safe:
+            const clampedY = Math.max(0, Math.min(localY, offset.current.height))
+            borderY.set(clampedY)
+            localMouseY.set(localY)
+        })
+
+        return () => {
+            unsubscribeX()
+            unsubscribeY()
+        }
+    }, [mouseX, mouseY, borderX, borderY, borderOpacity, localMouseX, localMouseY])
 
     const borderGradient = useTransform(
         [borderX, borderY, borderOpacity],
-        ([x, y, opacity]: any) =>
+        ([x, y, opacity]: number[]) =>
             `radial-gradient(400px circle at ${x}px ${y}px, rgba(255,255,255,${opacity}), transparent 80%)`
     )
 
@@ -84,7 +115,7 @@ export function SpotlightCard({
                 style={{
                     opacity: useTransform(isHovered, [0, 1], [0.2, 0.8]),
                     background: useTransform(
-                        [mouseX, mouseY],
+                        [localMouseX, localMouseY],
                         ([x, y]) => `radial-gradient(${size}px circle at ${x}px ${y}px, ${spotlightColor}, transparent 80%)`
                     ),
                 }}

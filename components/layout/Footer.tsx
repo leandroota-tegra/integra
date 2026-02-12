@@ -1,8 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { FadeIn } from "@/components/features/motion/FadeIn" // Optional animation
-import { Instagram, Linkedin, Twitter, Facebook } from "lucide-react"
+import { Instagram, Linkedin } from "lucide-react"
 import { EcossistemaBackground } from "@/components/features/EcossistemaBackground"
 
 export function Footer() {

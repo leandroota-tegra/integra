@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { FadeIn } from "@/components/features/motion/FadeIn"
 import { AlertCircle, FileX, MessageSquareWarning, CheckCircle2, Zap, BarChart3 } from "lucide-react"
@@ -67,7 +67,20 @@ const orderItems = [
     }
 ]
 
-function Card({ item, isChaos }: { item: any, isChaos: boolean }) {
+interface CardProps {
+    item: {
+        title: string
+        desc: string
+        icon: React.ElementType
+        color: string
+        border: string
+        bg: string
+        iconBg: string
+    }
+    isChaos: boolean
+}
+
+function Card({ item, isChaos }: CardProps) {
     return (
         <div className={`p-6 rounded-2xl border transition-all duration-300 group ${isChaos
             ? `border-neutral-200 bg-neutral-50 hover:border-neutral-300` // Gray/Dull

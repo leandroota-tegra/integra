@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { FadeIn } from "@/components/features/motion/FadeIn"
 import { Wallet, Users, Package, Trophy, ArrowRight, FileText, CreditCard } from "lucide-react"
-import Link from "next/link"
+import { SpotlightButton } from "@/components/ui/SpotlightButton"
 
 // STRICT BRAND PALETTE:
 // Brand (Cobalt): #252244 -> text-brand
@@ -170,12 +170,12 @@ export function ModulesAccordion() {
 
                 {/* Bottom CTA */}
                 <FadeIn delay={0.4} className="mt-20 text-center">
-                    <Link
+                    <SpotlightButton
                         href="/features"
                         className="inline-flex h-14 items-center justify-center rounded-full bg-cta px-10 text-lg font-bold text-white shadow-lg shadow-cta/25 transition-all hover:bg-cta-hover hover:scale-105 active:scale-95"
                     >
                         Ver todos os recursos
-                    </Link>
+                    </SpotlightButton>
                 </FadeIn>
 
             </div>

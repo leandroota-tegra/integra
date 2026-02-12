@@ -1,4 +1,5 @@
-"use client"
+// Vercel Sync Hash: 2026-02-06-1925
+import React from "react"
 
 import { FadeIn } from "@/components/features/motion/FadeIn"
 import {
@@ -15,11 +16,20 @@ import {
     ArrowUpRight
 } from "lucide-react"
 import { SpotlightCard } from "@/components/ui/SpotlightCard"
-import Link from "next/link"
+import { SpotlightButton } from "@/components/ui/SpotlightButton"
 import { EcossistemaBackground } from "./EcossistemaBackground"
 
 // Standardized Card Component for absolute consistency
-function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/10", iconColor = "text-white" }: any) {
+interface BentoCardProps {
+    title: string
+    desc: string
+    icon: React.ElementType
+    size: string
+    bg?: string
+    iconColor?: string
+}
+
+function BentoCard({ title, desc, icon: Icon, size, bg = "bg-white/10", iconColor = "text-white" }: BentoCardProps) {
     return (
         <SpotlightCard className={`${size} h-full p-8 flex flex-col justify-between ${bg}`}>
             <div className="flex justify-between items-start mb-6">
@@ -89,7 +99,7 @@ export function ModulesBento() {
                     <FadeIn delay={0.1} className="col-span-1">
                         <BentoCard
                             title="Integra Tempo"
-                            desc="Timesheet real. Menos 'achismo' na gestão de esforço."
+                            desc="Timesheet real. Menos &apos;achismo&apos; na gestão de esforço."
                             icon={Clock}
                             size="h-full"
                         />
@@ -187,12 +197,14 @@ export function ModulesBento() {
 
                 {/* Bottom CTA */}
                 <FadeIn delay={0.6} className="mt-20 text-center">
-                    <Link
-                        href="/teste-gratis"
-                        className="inline-flex h-14 items-center justify-center rounded-full bg-cta px-10 text-lg font-bold text-white shadow-lg shadow-cta/25 transition-all hover:bg-cta-hover hover:scale-105 active:scale-95"
-                    >
-                        Começar teste grátis
-                    </Link>
+                    <FadeIn delay={0.6} className="mt-20 text-center">
+                        <SpotlightButton
+                            href="/teste-gratis"
+                            className="inline-flex h-14 items-center justify-center rounded-full bg-cta px-10 text-lg font-bold text-white shadow-lg shadow-cta/25 transition-all hover:bg-cta-hover hover:scale-105 active:scale-95"
+                        >
+                            Começar teste grátis
+                        </SpotlightButton>
+                    </FadeIn>
                 </FadeIn>
 
             </div>

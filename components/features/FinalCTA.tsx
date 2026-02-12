@@ -1,7 +1,7 @@
 "use client"
 
 import { FadeIn } from "@/components/features/motion/FadeIn"
-import Link from "next/link"
+
 import { ArrowRight } from "lucide-react"
 import { SpotlightButton } from "@/components/ui/SpotlightButton"
 
@@ -23,23 +23,13 @@ export function FinalCTA() {
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-                        <SpotlightButton asChild spotlightColor="rgba(255, 255, 255, 0.25)">
-                            <Link
-                                href="/teste-gratis"
-                                className="inline-flex h-16 items-center justify-center rounded-full bg-cta px-10 text-xl font-bold text-white shadow-xl shadow-cta/20 transition-all hover:bg-cta-hover hover:scale-105 active:scale-95 w-full md:w-auto"
-                            >
-                                Começar teste grátis
-                                <ArrowRight className="ml-2 w-5 h-5" />
-                            </Link>
+                        <SpotlightButton href="/teste-gratis" spotlightColor="rgba(255, 255, 255, 0.25)" className="inline-flex h-16 items-center justify-center rounded-full bg-cta px-10 text-xl font-bold text-white shadow-xl shadow-cta/20 transition-all hover:bg-cta-hover hover:scale-105 active:scale-95 w-full md:w-auto">
+                            Começar teste grátis
+                            <ArrowRight className="ml-2 w-5 h-5" />
                         </SpotlightButton>
 
-                        <SpotlightButton asChild spotlightColor="rgba(0, 0, 0, 0.1)">
-                            <Link
-                                href="/demo"
-                                className="inline-flex h-16 items-center justify-center rounded-full border-2 border-slate-200 bg-white px-10 text-xl font-bold text-slate-700 transition-all hover:border-slate-300 hover:bg-slate-50 w-full md:w-auto"
-                            >
-                                Ver demonstração
-                            </Link>
+                        <SpotlightButton href="/demo" spotlightColor="rgba(0, 0, 0, 0.1)" borderColor="#94a3b8" className="inline-flex h-16 items-center justify-center rounded-full border-2 border-slate-200 bg-white px-10 text-xl font-bold text-slate-700 transition-all hover:border-slate-300 hover:bg-slate-50 w-full md:w-auto">
+                            Ver demonstração
                         </SpotlightButton>
                     </div>
 

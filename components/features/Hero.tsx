@@ -26,7 +26,7 @@ export function Hero() {
         offset: ["start start", "end start"]
     })
 
-    const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
+
     const yText = useTransform(scrollYProgress, [0, 1], ["0%", "20%"])
 
     return (
@@ -69,7 +69,7 @@ export function Hero() {
                     <FadeIn delay={0.3}>
                         <p className="text-lg md:text-xl text-white/60 mb-10 leading-relaxed font-light tracking-wide max-w-lg mx-auto md:mx-0 cursor-default">
                             A Integra Suite conecta financeiro, processos e time em um único painel. <br className="hidden md:block" />
-                            Automatize o "trabalho chato" e pare de cobrar status pelo WhatsApp.
+                            Automatize o &quot;trabalho chato&quot; e pare de cobrar status pelo WhatsApp.
                         </p>
                     </FadeIn>
 
@@ -77,15 +77,18 @@ export function Hero() {
                         <div className="flex flex-col items-center md:items-start gap-6">
                             <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
                                 <SpotlightButton
+                                    href="/teste-gratis"
                                     spotlightColor="rgba(255, 255, 255, 0.2)"
                                     spotlightSize={200}
                                     size="lg"
-                                    className="rounded-full bg-cta hover:bg-cta-hover text-white font-bold px-10 text-lg h-16 border-0 shadow-[0_0_40px_-10px_rgba(255,93,0,0.5)] transition-shadow duration-500 hover:shadow-[0_0_60px_-10px_rgba(255,93,0,0.7)] w-full"
+                                    className="rounded-full bg-cta hover:bg-cta-hover text-white font-bold px-10 text-lg h-16 border-0 shadow-[0_0_40px_-10px_rgba(255,93,0,0.5)] transition-shadow duration-500 hover:shadow-[0_0_60px_-10px_rgba(255,93,0,0.7)] hover:scale-105 active:scale-95 w-full"
                                 >
                                     Começar Grátis
                                 </SpotlightButton>
                                 <SpotlightButton
+                                    href="#solucao"
                                     spotlightColor="rgba(255, 255, 255, 0.1)"
+                                    borderColor="white"
                                     spotlightSize={200}
                                     size="lg"
                                     variant="outline"

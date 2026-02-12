@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { FadeIn } from "@/components/features/motion/FadeIn"
 import { Plus, Minus } from "lucide-react"
 import { EcossistemaBackground } from "@/components/features/EcossistemaBackground"
+import { SpotlightCard } from "@/components/ui/SpotlightCard"
 
 const faqs = [
     {
@@ -94,7 +95,7 @@ export function FAQSection() {
                     </FadeIn>
 
                     {/* Right: Accordion */}
-                    <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 shadow-2xl">
+                    <SpotlightCard className="p-8 shadow-2xl bg-white/5" spotlightColor="rgba(255, 255, 255, 0.15)">
                         {faqs.map((item, i) => (
                             <FadeIn key={i} delay={i * 0.1}>
                                 <AccordionItem
@@ -105,7 +106,7 @@ export function FAQSection() {
                                 />
                             </FadeIn>
                         ))}
-                    </div>
+                    </SpotlightCard>
 
                 </div>
 

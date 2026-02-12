@@ -105,7 +105,7 @@ export function Navbar() {
                             <Link href="/login" className="text-sm font-medium text-white hover:text-white/80 transition-colors">
                                 Entrar
                             </Link>
-                            <SpotlightButton className="rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 h-9 text-sm shadow-lg shadow-cta/20 border-0">
+                            <SpotlightButton href="/teste-gratis" className="rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 h-9 text-sm shadow-lg shadow-cta/20 border-0 hover:scale-105 active:scale-95">
                                 Começar Grátis
                             </SpotlightButton>
                         </div>
@@ -174,7 +174,7 @@ export function Navbar() {
                                 >
                                     Entrar
                                 </Link>
-                                <SpotlightButton className="w-full rounded-full bg-cta hover:bg-cta-hover text-white font-bold text-lg h-14 shadow-lg shadow-cta/20 border-0">
+                                <SpotlightButton href="/teste-gratis" className="w-full rounded-full bg-cta hover:bg-cta-hover text-white font-bold text-lg h-14 shadow-lg shadow-cta/20 border-0 hover:scale-105 active:scale-95">
                                     Começar Grátis
                                 </SpotlightButton>
                             </div>
