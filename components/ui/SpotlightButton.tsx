@@ -27,7 +27,7 @@ const MotionButton = motion.button
 // Forward ref to support Next.js Link behavior and animations
 export const SpotlightButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, SpotlightButtonProps>(
     ({ children, className, variant, size, href, spotlightColor = "rgba(255, 255, 255, 0.25)", spotlightSize = 250, borderColor = "white", ...props }, ref) => {
-        const MotionComponent = (href ? MotionLink : MotionButton) as React.ElementType
+        const MotionComponent = (href ? MotionLink : MotionButton) as any
         const localRef = useRef<HTMLElement>(null)
         const { x: mouseX, y: mouseY } = useMousePosition()
 

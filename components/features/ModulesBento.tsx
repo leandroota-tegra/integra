@@ -23,7 +23,7 @@ import { EcossistemaBackground } from "./EcossistemaBackground"
 interface BentoCardProps {
     title: string
     desc: string
-    icon: React.ElementType
+    icon: React.ElementType | any
     size: string
     bg?: string
     iconColor?: string

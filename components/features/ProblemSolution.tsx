@@ -71,7 +71,7 @@ interface CardProps {
     item: {
         title: string
         desc: string
-        icon: React.ElementType
+        icon: React.ElementType | any
         color: string
         border: string
         bg: string
