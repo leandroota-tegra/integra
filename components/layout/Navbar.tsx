@@ -87,7 +87,7 @@ export function Navbar() {
       >
         <div className="container mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative w-32 h-8 md:w-40 md:h-10">
+          <Link href="/" className="relative w-36 h-9 md:w-44 md:h-11">
             <Image
               src="/assets/logos/integra-logo-light.svg"
               alt="Integra Suite"
@@ -153,7 +153,7 @@ export function Navbar() {
               <Link
                 href="/"
                 onClick={() => setIsOpen(false)}
-                className="relative w-32 h-8"
+                className="relative w-36 h-9"
               >
                 <Image
                   src="/assets/logos/integra-logo-light.svg"
